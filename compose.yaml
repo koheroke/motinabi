@@ -1,0 +1,23 @@
+services:
+  honoappserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app/backEnd
+    env_file:
+      - .env
+    volumes:
+      - ./backEnd:/app/backEnd
+      - ./dist:/app/dist 
+    ports:
+      - "3000:3000"
+    tty: true
+    depends_on:
+      - db
+  db:
+    image: postgres:16.1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: azumax1000
+      POSTGRES_DB: motinabi
+      TZ: "Asia/Tokyo"
