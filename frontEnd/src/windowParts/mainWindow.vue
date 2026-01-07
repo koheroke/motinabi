@@ -583,6 +583,7 @@ window.addEventListener("click", (e) => {
   display: flex;
   flex-flow: column;
   overflow-y: scroll;
+  overflow-x: hidden;
   gap: 10px 0px;
 }
 .parentArea {
