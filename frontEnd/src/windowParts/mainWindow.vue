@@ -108,6 +108,7 @@ class DomManegiment {
     const span = thisDom.querySelector(".textContent");
     if (!span) return;
     const input = document.createElement("input");
+    input.classList.add("newNameInputBox");
     input.type = "text";
     input.value = span.textContent;
     span.replaceWith(input);
@@ -254,7 +255,9 @@ onMounted(async () => {
     domManager.value = new DomManegiment(parentArea.value);
   } else return;
   // if (data.loginBool == false) return;
+
   if (data.loginBool == true) {
+    //本番用
     emit(
       "sendTopber",
       JSON.stringify({
@@ -263,7 +266,8 @@ onMounted(async () => {
         type: "login",
       })
     );
-  }
+  } //本番用ここまで
+
   // if (data.windowInfo == null) return;
   // const this_data = JSON.parse(data.windowInfo);
   const this_data = JSON.parse(localStorage.getItem("data"));
@@ -533,9 +537,10 @@ window.addEventListener("click", (e) => {
   z-index: 30;
 }
 .openButton {
-  transform: translate(80%, 90%);
-  width: 15px;
-  height: 22px;
+  position: absolute;
+  transform: translate(50%, 80%);
+  width: 18px;
+  height: 15px;
   clip-path: polygon(0 0, 0 100%, 100% 50%);
   background-color: #e8e5e5;
   z-index: 30;
@@ -549,13 +554,20 @@ window.addEventListener("click", (e) => {
 }
 .textContent {
   display: flex;
-  align-items: center;
+  align-items: top;
   padding-left: 160px;
 }
 .imageAreaClass {
   position: absolute;
   top: -1px;
   left: 50px;
+}
+.newNameInputBox {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 160px;
+  font-family: "ヒラギノ角ゴ Std W8", "Hiragino Kaku Gothic Std";
 }
 </style>
 <style scoped>
