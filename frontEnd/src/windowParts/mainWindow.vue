@@ -249,24 +249,24 @@ let sendBool = true;
 //   const saveData = localStorage.getItem("data");
 // }
 onMounted(async () => {
-  const data = await post("/json/get"); //本番用
+  // const data = await post("/json/get"); //本番用
 
   if (parentArea.value) {
     domManager.value = new DomManegiment(parentArea.value);
   } else return;
   // if (data.loginBool == false) return;
 
-  if (data.loginBool == true) {
-    //本番用
-    emit(
-      "sendTopber",
-      JSON.stringify({
-        innerText: "ログインされてます",
-        sendBool: sendBool,
-        type: "login",
-      })
-    );
-  } //本番用ここまで
+  // if (data.loginBool == true) {
+  //   //本番用
+  //   emit(
+  //     "sendTopber",
+  //     JSON.stringify({
+  //       innerText: "ログインされてます",
+  //       sendBool: sendBool,
+  //       type: "login",
+  //     })
+  //   );
+  // } //本番用ここまで
 
   // if (data.windowInfo == null) return;
   // const this_data = JSON.parse(data.windowInfo);
@@ -492,7 +492,8 @@ window.addEventListener("click", (e) => {
   color: white;
   font-family: "ヒラギノ角ゴ Std W8", "Hiragino Kaku Gothic Std";
   z-index: 2;
-  border: 2px solid rgb(255, 255, 255);
+  border: 3px solid rgba(102, 101, 101, 0.878);
+  margin: 10px 0px;
 }
 .checkBoxClass {
   position: absolute;
@@ -501,7 +502,10 @@ window.addEventListener("click", (e) => {
 }
 .case .item {
   background-color: rgb(255, 255, 255);
-  margin: 2px;
+  margin: 3px;
+}
+.case .case {
+  margin: 3px 15px;
 }
 .item {
   z-index: 3;
@@ -514,6 +518,7 @@ window.addEventListener("click", (e) => {
   flex-flow: column;
   position: relative;
   display: flex;
+  margin: 10px 0px;
 }
 .item:hover {
   border: 2px solid #33a23d;
@@ -575,10 +580,10 @@ window.addEventListener("click", (e) => {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 5px 15px;
   display: flex;
   flex-flow: column;
   overflow-y: scroll;
+  gap: 10px 0px;
 }
 .parentArea {
   position: absolute;
