@@ -1,6 +1,4 @@
-<script setup>
-// import test from "./windows/test.vue";
-</script>
+<script setup></script>
 
 <template>
   <div class="main">

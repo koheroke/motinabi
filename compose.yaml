@@ -1,14 +1,27 @@
 services:
-  honoappserver:
+  motinabiserver:
     build:
       context: .
       dockerfile: Dockerfile
     working_dir: /app/backEnd
+    # #開発環境--------------
+    # develop:
+    #   watch:
+    #     - action: sync
+    #       path: ./backEnd
+    #       target: /app/backEnd
+    #       ignore:
+    #         - node_modules/
+    #     - action: rebuild
+    #       path: ./backEnd/package.json
+    # #------------------------------
     env_file:
       - .env
-    volumes:
-      - ./backEnd:/app/backEnd
-      - ./dist:/app/dist 
+    # volumes: #開発環境--------------
+    #   - ./backEnd:/app/backEnd
+    #   - /app/backEnd/node_modules 
+    #   - ./frontEnd/dist:/app/frontEnd/dist  
+    # #------------------------------
     ports:
       - "3000:3000"
     tty: true
@@ -21,3 +34,6 @@ services:
       POSTGRES_PASSWORD: azumax1000
       POSTGRES_DB: motinabi
       TZ: "Asia/Tokyo"
+
+
+

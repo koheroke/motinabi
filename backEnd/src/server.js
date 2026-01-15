@@ -11,7 +11,7 @@ app.route("/api/auth", authRoutes);
 app.route("/api/user", userRoutes);
 app.route("/api/json", jsonRoutes);
 app.route("/api/gemini", geminiRoutes);
-
+console.log("start");
 app.use("/assets/*", serveStatic({ root: "/app/frontEnd/dist" }));
 app.get("/", serveStatic({ path: "/app/frontEnd/dist/index.html" }));
 // app.use(

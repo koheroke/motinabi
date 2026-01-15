@@ -13,6 +13,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+
 const menuList = [{ menu: "削除" }, { menu: "名前変更" }];
 const menuShow = ref(false);
 const menuRef = ref(null);

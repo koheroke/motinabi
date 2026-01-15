@@ -5,13 +5,13 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted, h, render } from "vue";
+import { ref, watch, nextTick, onMounted, onUnmounted, h, render } from "vue";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { post } from "../plugins/appPost";
 import items from "../plugins/items";
 import useIcons from "../components/useIcons.vue";
-
+let dracDom = null;
 class DomManegiment {
   constructor(parentAreaElement) {
     if (!parentAreaElement) {
@@ -20,7 +20,14 @@ class DomManegiment {
     this.parentArea = parentAreaElement;
     this.currentDropTarget = null;
   }
-
+  domDrag(pos) {
+    dracDom = document.elementFromPoint(pos.x, pos.y);
+    if (
+      !dracDom.classList.contains("item") &&
+      !dracDom.classList.contains("case")
+    )
+      dracDom = null;
+  }
   domAddcleate(element) {
     const div = document.createElement("div");
     const addSpan = (text) => {
@@ -55,14 +62,21 @@ class DomManegiment {
     }
     this.mountIcon(imageArea, { name: icon, scale: 0.5 });
     div.appendChild(imageArea);
+    div.draggable = true;
     return div;
   }
   mountIcon(container, props) {
     const vnode = h(useIcons, props);
     render(vnode, container);
   }
-  addDOM(element, dropTarget) {
-    const newDom = this.domAddcleate(element);
+  addDOM(element, dropTarget, processed) {
+    let newDom = null;
+    if (processed) {
+      newDom = element;
+    } else {
+      newDom = this.domAddcleate(element);
+    }
+
     if (
       dropTarget === this.parentArea ||
       dropTarget.classList.contains("parentArea")
@@ -78,8 +92,7 @@ class DomManegiment {
     ) {
       target = target.parentElement;
     }
-
-    if (element.type === "item" || element.type === "case") {
+    if (element.type === "item" || element.type === "case" || processed) {
       if (target.classList.contains("item")) {
         const parentClass = target.parentElement;
         parentClass.appendChild(newDom);
@@ -254,6 +267,12 @@ onMounted(async () => {
   if (parentArea.value) {
     domManager.value = new DomManegiment(parentArea.value);
   } else return;
+
+  const handleMouseDown = (e) => {
+    if (domManager.value) {
+      domManager.value.domDrag(e);
+    }
+  };
   // if (data.loginBool == false) return;
 
   // if (data.loginBool == true) {
@@ -278,9 +297,11 @@ onMounted(async () => {
     const addItems = JSON.stringify(this_data.addItems);
     emit("sendUnderber", addItems);
   }
-  // sendBool = !sendBool;
+  window.addEventListener("mousedown", handleMouseDown);
+  onUnmounted(() => {
+    window.removeEventListener("mousedown", handleMouseDown);
+  });
 });
-
 async function checkLostItem() {
   if (!domManager.value) return;
   const getTexts = domManager.value.getAllTextContent();
@@ -384,18 +405,25 @@ async function sendSaveClientStrage() {
 }
 
 function onDrop(event) {
-  if (!item.value || !domManager.value) return;
   const { clientX, clientY } = event;
   const thisDom = document.elementFromPoint(clientX, clientY);
-
   if (!thisDom) return;
-
-  try {
-    const thisItem = JSON.parse(item.value);
-    domManager.value.addDOM(thisItem, thisDom);
-  } catch (e) {
-    console.warn("JSON parse failed", item.value, e);
+  if (dracDom != null) {
+    DropsFromParentArea(thisDom);
+    return;
   }
+  DropsFromItems(thisDom);
+}
+let processed = true;
+function DropsFromItems(thisDom) {
+  if (!item.value || !domManager.value) return;
+  const thisItem = JSON.parse(item.value);
+  let processed = false;
+  domManager.value.addDOM(thisItem, thisDom, processed);
+}
+function DropsFromParentArea(thisDom) {
+  domManager.value.addDOM(dracDom, thisDom, processed);
+  dracDom = null;
 }
 
 const props = defineProps({
