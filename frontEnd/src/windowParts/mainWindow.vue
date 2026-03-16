@@ -420,6 +420,8 @@ function DropsFromItems(thisDom) {
   const thisItem = JSON.parse(item.value);
   let processed = false;
   domManager.value.addDOM(thisItem, thisDom, processed);
+  console.log("thisItem",thisItem)
+  domManager.value.rmDom(thisItem)
 }
 function DropsFromParentArea(thisDom) {
   domManager.value.addDOM(dracDom, thisDom, processed);

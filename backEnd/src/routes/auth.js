@@ -35,7 +35,7 @@ app.get("/callback/google", async (c) => {
   if (!idToken) return c.text("ID token not found", 500);
 
   const payload = JSON.parse(
-    Buffer.from(idToken.split(".")[1], "base64").toString()
+    Buffer.from(idToken.split(".")[1], "base64").toString(),
   );
   setCookie(c, "userSub", payload.sub, {
     httpOnly: true,

@@ -65,6 +65,6 @@ watch(
   (newVal) => {
     action();
     text.value = JSON.parse(newVal).text;
-  }
+  },
 );
 </script>
